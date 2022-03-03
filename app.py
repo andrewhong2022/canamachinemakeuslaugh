@@ -3,7 +3,7 @@ from flask_restful import Api, Resource, reqparse
 from flask_cors import CORS #comment this on deployment
 from api.apiHandler import ApiHandler
 from api.sharePost import SharePost
-from api.textGenerator import TextGenerator
+from backend.madLibGenerator import MadLibGenerator
 
 app = Flask(__name__, static_url_path='', static_folder='frontend/build')
 CORS(app) #comment this on deployment
@@ -15,4 +15,4 @@ def serve(path):
 
 api.add_resource(ApiHandler, '/flask/hello')
 api.add_resource(SharePost, '/cammul/share')
-api.add_resource(TextGenerator, '/cammul/generate')
+api.add_resource(MadLibGenerator, '/cammul/generate')
