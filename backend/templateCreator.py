@@ -1,4 +1,5 @@
 import nltk
+nltk.download('averaged_perceptron_tagger')
 from nltk import pos_tag, word_tokenize
 from nltk.tokenize import RegexpTokenizer
 

@@ -12,4 +12,4 @@ class MadLibGenerator(Resource):
         tempCreator = TemplateCreator(sample, removalFrequency=6)
         tempCreator.parse()
         tempCreator.createTemplate()
-        return tempCreator.returnTemplate()
+        return tempCreator.returnPrompt() + tempCreator.returnTemplate()

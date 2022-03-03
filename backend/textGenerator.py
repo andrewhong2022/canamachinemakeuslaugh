@@ -1,9 +1,10 @@
 import os
 import openai
+from flask_restful import Api, Resource, reqparse
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-class TextGenerator:
+class TextGenerator(Resource):
     def __init__(self, prompt = "Once upon a time"):
         self.prompt = prompt
 
