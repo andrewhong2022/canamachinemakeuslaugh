@@ -3,7 +3,7 @@ import openai
 
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
-class TextGenerator():
+class TextGenerator:
     def __init__(self, prompt = "Once upon a time"):
         self.prompt = prompt
 
