@@ -2,11 +2,11 @@ import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import './App.css';
+import axios from 'axios';
 
 const App = () => {
   // example
-  const sentence = ["Henry", "_verb", "the", "dog", "_adverb", "."];
-
+  // const sentence = ["Henry", "_verb", "the", "dog", "_adverb", "."];
   const [userPrompt, setUserPrompt] = useState("");
   const [generatedText, setGeneratedText] = useState([]);
   const [partsOfSpeechArray, setPartsOfSpeechArray] = useState([]);
@@ -16,6 +16,7 @@ const App = () => {
   const [userPromptsArray, setUserPromptsArray] = useState([]);
   const [fullText, setFullText] = useState("");
   const [didGenerate, setDidGenerate] = useState(false);
+  const [firstSentence, setFirstSentence] = useState("");
   
   const onSubmitUserPrompt = (event) => {
     event.preventDefault();
@@ -33,9 +34,20 @@ const App = () => {
 
   const onStart = () => {
     console.log("started");
+    axios.get('http://127.0.0.1:5000/cammul/generate').then(response => {
+      console.log("SUCCESS", response)
+
+      const obj = JSON.parse(response["data"])
+      console.log(response["data"][1])
+      console.log(typeof response["data"])
+      setGeneratedText(obj["body"])
+      setFirstSentence(obj["prompt"])
+      setPartsOfSpeechArray(getPartsOfSpeechArray(obj["body"]))
+    }).catch(error => {
+      console.log(error)
+    })
     // TODO: use api to get generated text
-    setGeneratedText(sentence);
-    setPartsOfSpeechArray(getPartsOfSpeechArray(sentence));
+    
     //TODO: get and set first sentence 
   }
 
@@ -56,7 +68,7 @@ const App = () => {
   }
 
   const getFullTextWithUserPrompts = () => {
-    var fullText = "";
+    var fullText = firstSentence + " ";
     for (let i = 0; i < generatedText.length; i++) {
       if (generatedText[i].charAt(0) == "_") {
         fullText += userPromptsArray[0] + " ";
@@ -71,13 +83,23 @@ const App = () => {
     return fullText;
   }
 
+  const onShare = () => {
+    axios.post('http://127.0.0.1:5000/cammul/reddit',{
+      'story': fullText
+    }).then(() => {
+      console.log("SUCCESS")
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
   if (generatedText.length == 0) {
     return (
       <div className="App">
           <header className="App-header">
             <h1>Can a Machine Make Us Laugh?</h1>
-            <p>Press Start to get started!</p>
-            <Button onClick={onStart}>Start</Button>
+            <p>Press Begin to get started!</p>
+            <Button onClick={onStart}>Begin</Button>
         </header>
       </div>
     );
@@ -90,6 +112,7 @@ const App = () => {
             <p>Generate your final text!</p>
             <Button disabled={didGenerate} onClick={onGenerate}>Generate</Button>
             <p>{fullText}</p>
+            <Button onClick={onShare}>Share this with friends!</Button>
         </header>
       </div>
     );
@@ -100,7 +123,7 @@ const App = () => {
           <header className="App-header">
             <h1>Can a Machine Make Us Laugh?</h1>
             <h5>Based on this first sentence for context, enter answers for the prompts below.</h5>
-            <h5>example first sentence</h5>
+            <h5>{firstSentence}</h5>
             <p>Enter a {currentPOS} below</p>
             <form onSubmit={onSubmitUserPrompt}>
                 <input type="text" value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
@@ -111,43 +134,5 @@ const App = () => {
     );
   }
 }
-
-  
-// function App() {
-//   const [getMessage, setGetMessage] = useState({})
-
-//   useEffect(()=>{
-//     axios.get('http://localhost:5000/flask/hello').then(response => {
-//       console.log("SUCCESS", response)
-//       setGetMessage(response)
-//     }).catch(error => {
-//       console.log(error)
-//     })
-
-//   }, [])
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-
-//         <div>{getMessage.status === 200 ? 
-//           <h3>{getMessage.data.message}</h3>
-//           :
-//           <h3>LOADING</h3>}</div>
-//       </header>
-//     </div>
-//   );
-// }
 
 export default App;
