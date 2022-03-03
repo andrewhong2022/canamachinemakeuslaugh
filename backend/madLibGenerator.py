@@ -1,7 +1,8 @@
 from backend.TemplateCreator import TemplateCreator
 from flask_restful import Api, Resource, reqparse
-from textGenerator import TextGenerator
-from templateCreator import TemplateCreator
+from backend.textGenerator import TextGenerator
+from backend.templateCreator import TemplateCreator
+import json
 
 class MadLibGenerator(Resource):
     def __init__(self, prompt = "Once upon a time"):
@@ -13,4 +14,4 @@ class MadLibGenerator(Resource):
         tempCreator = TemplateCreator(sample, removalFrequency=6)
         tempCreator.parse()
         tempCreator.createTemplate()
-        return tempCreator.returnTemplate()
+        return json.dumps({ "response" : tempCreator.returnTemplate()})
