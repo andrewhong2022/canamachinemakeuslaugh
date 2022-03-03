@@ -50,6 +50,7 @@ class TemplateCreator:
                     }
         
         self.stopWords = ["was", "were", "is", "has", "been", "am", "are", "have"]
+        self.prompt = []
         
         # used to determine how often words are censored, TODO: improve
         self.removalFrequency = removalFrequency
@@ -60,13 +61,19 @@ class TemplateCreator:
         punctuation = r'[]!"$%&\'()*+,./:;=#@?[\\^_`’{|}~-]?'
         tokenizer = RegexpTokenizer(r'\w+' + punctuation + r'\w+?|[^\s]+?')
         combinedPOS = pos_tag(tokenizer.tokenize(self.incomingText))
+        after = False
     
         for i in combinedPOS:
-            self.wordList.append(i[0])
-            if i[0] in [".", "?", "!", ",", ":", ";", "-", "–", "(", ")", "[", "]", "{", "}", "'", '"', "’"]:
-                self.POSList.append(".")
+            if not after:
+                self.prompt.append(i[0])
+                if i[0] == ".":
+                    after = True
             else:
-                self.POSList.append(i[1])
+                self.wordList.append(i[0])
+                if i[0] in [".", "?", "!", ",", ":", ";", "-", "–", "(", ")", "[", "]", "{", "}", "'", '"', "’"]:
+                    self.POSList.append(".")
+                else:
+                    self.POSList.append(i[1])
 
     def createTemplate(self):
         for i in range(len(self.wordList)):
@@ -79,3 +86,6 @@ class TemplateCreator:
 
     def returnTemplate(self):
         return self.templateList
+    
+    def returnPrompt(self):
+        return self.prompt
