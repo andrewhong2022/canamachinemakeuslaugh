@@ -14,7 +14,7 @@ subreddit = reddit.subreddit('cammul')
 a = {'desc': subreddit.description, 'title': subreddit.title, 'display': subreddit.display_name}
 selftext = "This is our comedy sketch. Today was such a bad day, I spilled my coffe. Adding extra text to see how long it goes before a line break. I hope we get a 100 in this class. Comedy is hard."
 
-class SharePost(Resource):
+class ShareReddit(Resource):
   def get(self):
       reddit.subreddit("cammul").submit("Test Post #1", selftext=selftext)
       return json.dumps({'post': selftext})
