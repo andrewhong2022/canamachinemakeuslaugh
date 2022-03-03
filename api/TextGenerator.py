@@ -1,7 +1,7 @@
 import os
 import openai
 
-openai.api_key = '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'
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class TextGenerator:
     def __init__(self, prompt = "Once upon a time"):
