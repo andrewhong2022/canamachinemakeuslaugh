@@ -1,4 +1,3 @@
-from backend.TemplateCreator import TemplateCreator
 from flask_restful import Api, Resource, reqparse
 from backend.textGenerator import TextGenerator
 from backend.templateCreator import TemplateCreator
