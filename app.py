@@ -16,3 +16,4 @@ def serve(path):
 api.add_resource(ApiHandler, '/flask/hello')
 api.add_resource(ShareReddit, '/cammul/reddit')
 api.add_resource(ShareTwitter, '/cammul/twitter')
+
