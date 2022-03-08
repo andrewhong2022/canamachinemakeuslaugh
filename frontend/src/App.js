@@ -1,22 +1,35 @@
 import React, {useState} from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import './App.css';
+import InitialPrompt from './InitialPrompt';
+import MadLib from './MadLib';
+import Share from './Share';
 import axios from 'axios';
 
 const App = () => {
-  // example
-  // const sentence = ["Henry", "_verb", "the", "dog", "_adverb", "."];
+  const [initialPrompt, setInitialPrompt] = useState("");
+  const [oldTextWithUserInputs, setOldTextWithUserInputs] = useState("");
+  const [newTextWithBlanks, setNewTextWithBlanks] = useState("");
+  const [didStart, setDidStart] = useState(false);
+  const [isDone, setIsDone] = useState(false);
+  
+
   const [userPrompt, setUserPrompt] = useState("");
   const [generatedText, setGeneratedText] = useState([]);
   const [partsOfSpeechArray, setPartsOfSpeechArray] = useState([]);
   const [num, setNum] = useState(0);
   const [currentPOS, setCurrentPOS] = useState("");
-  const [isDone, setIsDone] = useState(false);
+  // const [isDone, setIsDone] = useState(false);
   const [userPromptsArray, setUserPromptsArray] = useState([]);
   const [fullText, setFullText] = useState("");
   const [didGenerate, setDidGenerate] = useState(false);
   const [firstSentence, setFirstSentence] = useState("");
+
+  const onInitialPromptSubmit = () => {
+    // send the initial prompt to backend
+    // get the new sentence from the backend
+    // set new sentence in state
+  }
   
   const onSubmitUserPrompt = (event) => {
     event.preventDefault();
@@ -30,30 +43,6 @@ const App = () => {
     newArr.push(userPrompt);
     setUserPromptsArray(newArr);
     console.log(userPromptsArray);
-  }
-
-  const onStart = () => {
-    console.log("started");
-    axios.get('http://127.0.0.1:5000/cammul/generate').then(response => {
-      console.log("SUCCESS", response)
-
-      const obj = JSON.parse(response["data"])
-      console.log(response["data"][1])
-      console.log(typeof response["data"])
-      setGeneratedText(obj["body"])
-      setFirstSentence(obj["prompt"])
-      setPartsOfSpeechArray(getPartsOfSpeechArray(obj["body"]))
-    }).catch(error => {
-      console.log(error)
-    })
-    // TODO: use api to get generated text
-    
-    //TODO: get and set first sentence 
-  }
-
-  const onGenerate = () => {
-    setFullText(getFullTextWithUserPrompts());
-    setDidGenerate(true);
   }
 
   const getPartsOfSpeechArray = (textArray) => {
@@ -83,56 +72,17 @@ const App = () => {
     return fullText;
   }
 
-  const onShare = () => {
-    axios.post('http://127.0.0.1:5000/cammul/reddit',{
-      'story': fullText
-    }).then(() => {
-      console.log("SUCCESS")
-    }).catch(error => {
-      console.log(error)
-    })
-  }
-
-  if (generatedText.length == 0) {
-    return (
-      <div className="App">
-          <header className="App-header">
-            <h1>Can a Machine Make Us Laugh?</h1>
-            <p>Press Begin to get started!</p>
-            <Button onClick={onStart}>Begin</Button>
-        </header>
-      </div>
-    );
-  }
-  else if (isDone) {
-    return (
-      <div className="App">
-          <header className="App-header">
-            <h1>Can a Machine Make Us Laugh?</h1>
-            <p>Generate your final text!</p>
-            <Button disabled={didGenerate} onClick={onGenerate}>Generate</Button>
-            <p>{fullText}</p>
-            <Button onClick={onShare}>Share this with friends!</Button>
-        </header>
-      </div>
-    );
-  }
-  else {
-    return (
-      <div className="App">
-          <header className="App-header">
-            <h1>Can a Machine Make Us Laugh?</h1>
-            <h5>Based on this first sentence for context, enter answers for the prompts below.</h5>
-            <h5>{firstSentence}</h5>
-            <p>Enter a {currentPOS} below</p>
-            <form onSubmit={onSubmitUserPrompt}>
-                <input type="text" value={userPrompt} onChange={(e) => setUserPrompt(e.target.value)}/>
-              <input type="submit"/>
-            </form>
-        </header>
-      </div>
-    );
-  }
+  return (
+    <div className="App">
+      <header className="App-header">
+        <h1>Can a Machine Make Us Laugh?</h1>
+        {/* <Start/> DO I EVEN NEED THIS LOL*/}
+        <InitialPrompt initialPromptState = {{initialPrompt, setInitialPrompt}} didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}></InitialPrompt>
+        <MadLib didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}} isDoneState = {{isDone, setIsDone}}/>
+        <Share isDoneState = {{isDone, setIsDone}}/>
+      </header>
+    </div>
+  );
 }
 
 export default App;
