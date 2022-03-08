@@ -10,24 +10,23 @@ import Button from '@mui/material/Button';
 
 const InitialPrompt = ({initialPromptState, didStartState, newTextState, oldTextState}) => {
 
-    const pickPrompt = (e) => {
-        //TODO: send initial prompt to backend
-      let formData = new FormData();
-      formData.append('data',formData);
-      axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(() => {
-              console.log("SUCCESS")
-          }).catch(error => {
-              console.log(error)
-          })
-  
-      //TODO: get the new sentence
-      initialPromptState.setInitialPrompt(e);
-    }
+const pickPrompt = (e) => {
+    initialPromptState.setInitialPrompt(e);
+}
 
   const onStart = () => {
+    let formData = new FormData();
+    formData.append('data',initialPromptState.initialPrompt);
+    axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(res => {
+            console.log(res.data)
+            newTextState.setNewTextWithBlanks(res.data);
+        }).catch(error => {
+            console.log(error)
+        })
+  
+      //TODO: get the new sentence
     oldTextState.setOldTextWithUserInputs(initialPromptState.initialPrompt);
-    newTextState.setNewTextWithBlanks("hello my name is ");
-    didStartState.setDidStart(true);
+    didStartState.setDidStart(true); 
   }
 
   if (!didStartState.didStart) {
@@ -41,9 +40,9 @@ const InitialPrompt = ({initialPromptState, didStartState, newTextState, oldText
                 className="mt-2"
                 onSelect={pickPrompt}
             >
-                <Dropdown.Item eventKey="once upon a time"> Once upon a time... </Dropdown.Item>
-                <Dropdown.Item eventKey="today was such a bad day">Today was such a bad day...</Dropdown.Item>
-                <Dropdown.Item eventKey="sorry i'm late">Sorry I'm late...</Dropdown.Item>
+                <Dropdown.Item eventKey="Once upon a time"> Once upon a time... </Dropdown.Item>
+                <Dropdown.Item eventKey="Today was such a bad day">Today was such a bad day...</Dropdown.Item>
+                <Dropdown.Item eventKey="Sorry I'm late">Sorry I'm late...</Dropdown.Item>
             </DropdownButton>
             <Button onClick={onStart}>Begin</Button>
         </div>
