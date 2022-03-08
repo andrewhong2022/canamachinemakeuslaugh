@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import './App.css';
-import TypeWriter from 'react-typewriter';
+import Typewriter from 'typewriter-effect';
+import axios from 'axios';
 
 const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
   const [userPrompt, setUserPrompt] = useState("");
@@ -9,17 +10,26 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
     event.preventDefault();
     const fullText = getFullText();
 
-    // TODO: send the full text (old + new + user input) to backend
-
-    // TODO: send full text to backend
-
-    // TODO: get and set new sentence
-    oldTextState.setOldTextWithUserInputs(fullText);
-    newTextState.setNewTextWithBlanks("i am a ");
+    let formData = new FormData();
+    formData.append('data', fullText);
+    axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(res => {
+            var dataJSON = JSON.parse(res.data)
+            if (dataJSON.code === 204) {
+              oldTextState.setOldTextWithUserInputs(oldTextState.oldTextWithUserInputs 
+                + " " + newTextState.newTextWithBlanks + " " + userPrompt);
+              isDoneState.setIsDone(true);
+            }
+            else {
+              oldTextState.setOldTextWithUserInputs(fullText);
+              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" "));
+            }
+        }).catch(error => {
+            console.log(error)
+            isDoneState.setIsDone(true);
+        })
 
     // TODO: if get error message, finish
-    
-    isDoneState.setIsDone(true);
+    // isDoneState.setIsDone(true);
 
     setUserPrompt("");
 
@@ -36,8 +46,9 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
   }
 
   const getFullText = () => {
-    return oldTextState.oldTextWithUserInputs + newTextState.newTextWithBlanks + userPrompt;
+    return oldTextState.oldTextWithUserInputs + " " + newTextState.newTextWithBlanks + " " + userPrompt;
   }
+
 
   if (didStartState.didStart && !isDoneState.isDone) {
     return (
@@ -45,7 +56,13 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
         <div>
           <p>{oldTextState.oldTextWithUserInputs}</p>
         </div>
-        <TypeWriter typing={1}>{newTextState.newTextWithBlanks}</TypeWriter>
+        <Typewriter
+          options={{
+            strings: newTextState.newTextWithBlanks,
+            autoStart: true,
+            delay: 30,
+          }}
+        />
           <div>
               <p>Please complete the sentence.</p>
               <form onSubmit={onSubmitUserInput}>
@@ -59,7 +76,7 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
   else if (isDoneState.isDone) {
     return (
       <div>
-        <p>{getFullText()}</p>
+        <p>{oldTextState.oldTextWithUserInputs}</p>
       </div>
     );  
   }

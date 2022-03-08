@@ -1,5 +1,4 @@
 import React, {useState} from 'react';
-import Button from '@mui/material/Button';
 import './App.css';
 
 const Share = ({isDoneState}) => {
@@ -16,7 +15,7 @@ const Share = ({isDoneState}) => {
   
   if (isDoneState.isDone) {
     return (
-      <Button onClick={onShare}>Share this with friends!</Button>
+      <button onClick={onShare}>Share this with friends!</button>
     );
   }
   else {
