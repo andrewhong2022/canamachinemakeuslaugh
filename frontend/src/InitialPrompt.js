@@ -10,19 +10,19 @@ import Button from '@mui/material/Button';
 
 const InitialPrompt = ({initialPromptState, didStartState, newTextState, oldTextState}) => {
 
-  const pickPrompt = (e) => {
-      // TODO: send initial prompt to backend
-    // axios.post('http://127.0.0.1:5000/cammul/generate',{
-    //       'data': e
-    //     }).then(() => {
-    //         console.log("SUCCESS")
-    //     }).catch(error => {
-    //         console.log(error)
-    //     })
-
-    // TODO: get the new sentence
-    initialPromptState.setInitialPrompt(e);
-  }
+    const pickPrompt = (e) => {
+        //TODO: send initial prompt to backend
+      let formData = new FormData();
+      formData.append('data',formData);
+      axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(() => {
+              console.log("SUCCESS")
+          }).catch(error => {
+              console.log(error)
+          })
+  
+      //TODO: get the new sentence
+      initialPromptState.setInitialPrompt(e);
+    }
 
   const onStart = () => {
     oldTextState.setOldTextWithUserInputs(initialPromptState.initialPrompt);
