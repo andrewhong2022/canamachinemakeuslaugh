@@ -5,29 +5,24 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap';
 import axios from 'axios';
-import Button from '@mui/material/Button';
 
 
 const InitialPrompt = ({initialPromptState, didStartState, newTextState, oldTextState}) => {
 
 const pickPrompt = (e) => {
-    initialPromptState.setInitialPrompt(e);
-}
-
-  const onStart = () => {
     let formData = new FormData();
-    formData.append('data',initialPromptState.initialPrompt);
+    formData.append('data',e);
     axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(res => {
-            console.log(res.data)
-            newTextState.setNewTextWithBlanks(res.data);
+            var dataJSON = JSON.parse(res.data)
+            newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" "));
         }).catch(error => {
             console.log(error)
         })
   
-      //TODO: get the new sentence
-    oldTextState.setOldTextWithUserInputs(initialPromptState.initialPrompt);
-    didStartState.setDidStart(true); 
-  }
+    oldTextState.setOldTextWithUserInputs(e);
+    didStartState.setDidStart(true);
+}
+
 
   if (!didStartState.didStart) {
     return (
@@ -44,7 +39,6 @@ const pickPrompt = (e) => {
                 <Dropdown.Item eventKey="Today was such a bad day">Today was such a bad day...</Dropdown.Item>
                 <Dropdown.Item eventKey="Sorry I'm late">Sorry I'm late...</Dropdown.Item>
             </DropdownButton>
-            <Button onClick={onStart}>Begin</Button>
         </div>
         );
   }
