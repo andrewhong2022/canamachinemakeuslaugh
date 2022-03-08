@@ -1,4 +1,4 @@
-import nltk
+impoimport nltk
 from nltk import pos_tag, word_tokenize
 from nltk.tokenize import RegexpTokenizer
 # nltk.download('averaged_perceptron_tagger')
@@ -59,20 +59,14 @@ class TemplateCreator:
                 self.POSList.append(i[1])
                 
 
-    def createTemplate(self, removalFrequency = None):
-        # used to determine how often words are censored, default is only one word is censored
-        if removalFrequency == None:
-            removalFrequency = len(self.wordList)
-        counter = removalFrequency
-        
+    def createTemplate(self):
         for i in range(len(self.wordList)-1, -1, -1):
             word = self.wordList[i]
-            if counter >= removalFrequency and self.POSList[i] in self.dict and self.wordList[i] not in self.stopWords:
-                self.templateList = ["_" + self.dict[self.POSList[i]]] + self.templateList
-                counter = 0
-            else:
-                counter += 1
-                self.templateList = [self.wordList[i]] + self.templateList
+            if self.POSList[i] in self.dict and self.wordList[i] not in self.stopWords:
+                self.templateList = self.wordList[:i]
+                self.templateList.append("_" + self.dict[self.POSList[i]])
+                break
 
     def returnTemplate(self):
         return self.templateList
+
