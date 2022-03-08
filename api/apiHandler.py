@@ -1,7 +1,14 @@
 from flask_restful import Api, Resource, reqparse
+from flask import request, jsonify
+import sys
 
 class ApiHandler(Resource):
   def get(self):
+    # parser = reqparse.RequestParser()
+    # parser.add_argument('story', type=str)
+    # args = parser.parse_args()
+    # request_json = args['story']
+    # print(request.data.decode("utf-8") , file=sys.stderr)
     return {
       'resultStatus': 'SUCCESS',
       'message': "Hello Api Handler"
