@@ -37,9 +37,14 @@ class MadLibGenerator(Resource):
     def post(self):
         print("POST", file=sys.stderr)
         
-        oldSentence_prime = request.data.decode('utf-8')
+        oldSentence_prime = request.form.get('data')
         if len(oldSentence_prime) == 0:
-            exit(500)
+            return json.dumps({
+                "prompt" : self.prompt,
+                "newSentence" : [],
+                "code" : 400, # bad request
+                "errorMessage" : "Error 400: Prompt missing."
+            })
         
         self.prompt += oldSentence_prime
         print(self.prompt, file=sys.stderr)
