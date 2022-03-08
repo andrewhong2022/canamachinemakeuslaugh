@@ -32,8 +32,16 @@ class TemplateCreator:
                      "RBS": "superlative adverb (e.g. best)",
                     }
         
-        self.stopWords = ["was", "were", "is", "has", "been", "am", "are", "have", 
-                          "feel", "felt", "feeling", "name", "named", "naming"]
+        self.stopWords = ["be", "was", "wasn't", "were", "weren't", "is", "isn't", "has",
+                          "been", "am", "are", "aren't", "have", "haven't",
+                          "feel", "felt", "feeling", "name", "named", "naming",
+                          "can", "cannot", "can't", "could", "couldn't", "may",
+                          "might", "will", "shall", "would", "wouldn't", "should",
+                          "shouldn't", "must", "do", "did", "does", "doing", "done",
+                          "think", "thinks", "thinking", "thought",
+                          "happen", "happens", "happened", "happening",
+                          "begin", "begins", "start", "starts", "started",
+                          "seem", "seemed", "seems", "seeming", "tend", "tends"]
         
 
 
