@@ -15,6 +15,10 @@ a = {'desc': subreddit.description, 'title': subreddit.title, 'display': subredd
 selftext = "This is our comedy sketch. Today was such a bad day, I spilled my coffe. Adding extra text to see how long it goes before a line break. I hope we get a 100 in this class. Comedy is hard."
 
 class ShareReddit(Resource):
-  def get(self):
-      reddit.subreddit("cammul").submit("Test Post #1", selftext=selftext)
-      return json.dumps({'post': selftext})
+  def post(self):
+    parser = reqparse.RequestParser()
+    parser.add_argument('story', type=str)
+    args = parser.parse_args()
+    request_json = args['story']
+    reddit.subreddit("cammul").submit("New Cammul Story", selftext=request_json)
+    return json.dumps({'post': request_json})

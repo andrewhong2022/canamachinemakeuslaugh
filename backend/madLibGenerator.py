@@ -6,6 +6,7 @@ import json
 class MadLibGenerator(Resource):
     def __init__(self, prompt = "Once upon a time"):
         self.prompt = prompt
+        self.story = ""
         self.gen = TextGenerator(prompt)
 
     def get(self):
