@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import Button from '@mui/material/Button';
 import './App.css';
 
 const Start = () => {
@@ -8,7 +9,7 @@ const Start = () => {
     return (
         <div>
             <p>Press Begin to get started!</p>
-            <button onClick={() => {setDidStart(true);}}>Begin</button>
+            <Button onClick={() => {setDidStart(true);}}>Begin</Button>
         </div>
     );
   }
