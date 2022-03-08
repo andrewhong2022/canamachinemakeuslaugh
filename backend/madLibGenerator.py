@@ -34,8 +34,8 @@ class MadLibGenerator(Resource):
         creator.createTemplate()
         return creator.returnTemplate()
 
-    def get(self):
-        print("GET", file=sys.stderr)
+    def post(self):
+        print("POST", file=sys.stderr)
         
         oldSentence_prime = request.data.decode('utf-8')
         if len(oldSentence_prime) == 0:
