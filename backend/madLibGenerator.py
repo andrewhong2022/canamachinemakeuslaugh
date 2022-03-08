@@ -10,18 +10,6 @@ import openai
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 class MadLibGenerator(Resource):
-<<<<<<< Updated upstream
-    def __init__(self, prompt = "Once upon a time"):
-        self.prompt = prompt
-        self.gen = TextGenerator(prompt)
-
-    def get(self):
-        sample = self.gen.get()
-        tempCreator = TemplateCreator(sample, removalFrequency=6)
-        tempCreator.parse()
-        tempCreator.createTemplate()
-        return json.dumps({ "response" : tempCreator.returnTemplate()})
-=======
     def __init__(self):
         self.prompt = ""
 
@@ -69,4 +57,3 @@ class MadLibGenerator(Resource):
             "newSentence" : self.process(newSentence),
             "code" : 200 # successful, content was generated
         })
->>>>>>> Stashed changes
