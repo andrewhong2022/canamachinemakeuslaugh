@@ -1,25 +1,7 @@
 import nltk
-nltk.download('averaged_perceptron_tagger')
 from nltk import pos_tag, word_tokenize
 from nltk.tokenize import RegexpTokenizer
-
-# Examples for each form on frontend
-
-# adjective -> 'big'
-# comparativeAdjective -> 'bigger'
-# superlativeAdjective -> 'biggest'
-# singularNoun -> 'desk'
-# pluralNoun -> ‘desks'
-# adverb -> ‘silently’
-# comparativeAdverb -> ‘better’
-# superlativeAdverb -> ‘best’
-# baseVerb -> ‘take’
-# pastTenseVerb -> ‘took’
-# presentParticipleVerb -> ‘taking’
-# pastParticipleVerb -> ‘taken’
-# 1stPersonPresentTenseVerb -> ‘take’
-# 3rdPersonPresentTenseVerb -> ‘takes’
-
+# nltk.download('averaged_perceptron_tagger')
 
 # parse text -> create template -> return template
 
@@ -29,64 +11,60 @@ class TemplateCreator:
     # removalFrequency -- percent of words to be removed in sample
     # templateList = ["Henry", "_verb", "the", "_noun", "aggressively"]
     
-    def __init__(self, incomingText, removalFrequency=6):
+    def __init__(self, incomingText):
         self.wordList = []
         self.POSList = []
         self.incomingText = incomingText
         self.templateList = []
-        self.dict = {"NN": "singularNoun",
-                     "NNS": "pluralNoun",
-                     "JJ": "adjective",
-                     "JJR": "comparativeAdjective",
-                     "JJS": "superlativeAdjective",
-                     "VB": "baseVerb",
-                     "VBD": "pastTenseVerb",
-                     "VBG": "presentParticipleVerb",
-                     "VBN": "pastParticipleVerb",
-                     "VBP": "1stPersonPresentTenseVerb",
-                     "VBZ": "3rdPersonPresentTenseVerb",
-                     "RB": "adverb",
-                     "RBR": "comparativeAdverb",
-                     "RBS": "superlativeAdverb",
+        self.dict = {"NN": "singular noun (e.g desk)",
+                     "NNS": "plural noun (e.g. desks)",
+                     "JJ": "adjective (e.g. big)",
+                     "JJR": "comparative adjective (e.g. bigger)",
+                     "JJS": "superlative adjective (e.g. biggest)",
+                     "VB": "base verb (e.g. take)",
+                     "VBD": "past tense verb (e.g. took)",
+                     "VBG": "present participle verb (e.g. taking)",
+                     "VBN": "past participle verb (e.g. taken)",
+                     "VBP": "first person present tense verb (e.g. take)",
+                     "VBZ": "third person present tense verb (e.g. takes)",
+                     "RB": "adverb (e.g. silently)",
+                     "RBR": "comparative adverb (e.g. better)",
+                     "RBS": "superlative adverb (e.g. best)",
                     }
         
-        self.stopWords = ["was", "were", "is", "has", "been", "am", "are", "have"]
-        self.prompt = []
+        self.stopWords = ["was", "were", "is", "has", "been", "am", "are", "have", 
+                          "feel", "felt", "feeling", "name", "named", "naming"]
         
-        # used to determine how often words are censored, TODO: improve
-        self.removalFrequency = removalFrequency
-        self.counter = removalFrequency
+
 
     def parse(self):
         # TODO: account for how the text will be generated
         punctuation = r'[]!"$%&\'()*+,./:;=#@?[\\^_`’{|}~-]?'
         tokenizer = RegexpTokenizer(r'\w+' + punctuation + r'\w+?|[^\s]+?')
         combinedPOS = pos_tag(tokenizer.tokenize(self.incomingText))
-        after = False
     
         for i in combinedPOS:
-            if not after:
-                self.prompt.append(i[0])
-                if i[0] == ".":
-                    after = True
+            self.wordList.append(i[0])
+            if i[0] in [".", "?", "!", ",", ":", ";", "-", "–", "(", ")", "[", "]", "{", "}", "'", '"', "’"]:
+                self.POSList.append(".")
             else:
-                self.wordList.append(i[0])
-                if i[0] in [".", "?", "!", ",", ":", ";", "-", "–", "(", ")", "[", "]", "{", "}", "'", '"', "’"]:
-                    self.POSList.append(".")
-                else:
-                    self.POSList.append(i[1])
+                self.POSList.append(i[1])
+                
 
-    def createTemplate(self):
-        for i in range(len(self.wordList)):
-            if self.counter >= self.removalFrequency and self.POSList[i] in self.dict and self.wordList[i] not in self.stopWords:
-                self.templateList.append("_" + self.dict[self.POSList[i]])
-                self.counter = 0
+    def createTemplate(self, removalFrequency = None):
+        # used to determine how often words are censored, default is only one word is censored
+        if removalFrequency == None:
+            removalFrequency = len(self.wordList)
+        counter = removalFrequency
+        
+        for i in range(len(self.wordList)-1, -1, -1):
+            word = self.wordList[i]
+            if counter >= removalFrequency and self.POSList[i] in self.dict and self.wordList[i] not in self.stopWords:
+                self.templateList = ["_" + self.dict[self.POSList[i]]] + self.templateList
+                counter = 0
             else:
-                self.counter += 1
-                self.templateList.append(self.wordList[i])
+                counter += 1
+                self.templateList = [self.wordList[i]] + self.templateList
 
     def returnTemplate(self):
         return self.templateList
-    
-    def returnPrompt(self):
-        return self.prompt
