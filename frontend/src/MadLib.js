@@ -66,7 +66,9 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
           <div>
               <p>Please complete the sentence.</p>
               <form onSubmit={onSubmitUserInput}>
-                  <input type="text" value={userPrompt} onChange={(e) => {setUserPrompt(e.target.value);}}></input>
+                  <div>
+                    <textarea rows="3" cols="50" placeholder="Finish the sentence" value={userPrompt} onChange={(e) => {setUserPrompt(e.target.value);}}>test</textarea>
+                  </div>
                   <input type="submit"/>
               </form>
           </div>

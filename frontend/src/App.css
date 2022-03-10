@@ -136,3 +136,16 @@ p{
 #Submit-button {
   margin-top: 3%;
 }
+
+.cammul {
+  font-size: 60pt;
+  color: #89CFF0;
+}
+
+.header {
+  padding-bottom: 5%;
+}
+
+.user-input {
+  size: 20%;
+}

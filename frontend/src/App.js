@@ -73,11 +73,13 @@ const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <h1>Can a Machine Make Us Laugh?</h1>
-        {/* <Start/> DO I EVEN NEED THIS LOL*/}
+        <div className="header">
+          <h1 className="cammul">CAMMUL</h1>
+          <h1>Can a Machine Make Us Laugh?</h1>
+        </div>
         <InitialPrompt initialPromptState = {{initialPrompt, setInitialPrompt}} didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}></InitialPrompt>
         <MadLib didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}} isDoneState = {{isDone, setIsDone}}/>
-        <Share isDoneState = {{isDone, setIsDone}}/>
+        <Share isDoneState = {{isDone, setIsDone}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}/>
       </header>
     </div>
   );
