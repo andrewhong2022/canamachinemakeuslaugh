@@ -27,6 +27,7 @@ const pickPrompt = (e) => {
   if (!didStartState.didStart) {
     return (
         <div>
+            <p>Select a prompt to get started!</p>
             <DropdownButton
                 id="dropdown-button-dark-example2"
                 variant="secondary"
