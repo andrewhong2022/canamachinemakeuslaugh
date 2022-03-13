@@ -26,6 +26,7 @@ class MadLibGenerator(Resource):
             presence_penalty=0
             )
         
+        print(response, sys.stderr)
         return response["choices"][0]["text"]
 
     def process(self, text):
