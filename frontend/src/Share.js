@@ -5,7 +5,7 @@ import axios from 'axios';
 const Share = ({isDoneState, oldTextState}) => {
 
   const onShare = () => {
-    axios.post('http://127.0.0.1:5000/cammul/reddit',{
+    axios.post('https://cammul.herokuapp.com/cammul/reddit',{
       'story': oldTextState.oldTextWithUserInputs
     }).then(() => {
       console.log("SUCCESS")
