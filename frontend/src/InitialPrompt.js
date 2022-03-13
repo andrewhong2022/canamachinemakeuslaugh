@@ -12,7 +12,7 @@ const InitialPrompt = ({initialPromptState, didStartState, newTextState, oldText
 const pickPrompt = (e) => {
     let formData = new FormData();
     formData.append('data',e);
-    axios.post('https://cammul.herokuapp.com/cammul/generate',formData).then(res => {
+    axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(res => {
             var dataJSON = JSON.parse(res.data)
             newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^\$A-Za-z0-9])/ig, '$1'));
         }).catch(error => {
