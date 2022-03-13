@@ -17,12 +17,12 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
             if (dataJSON.code === 204) {
               oldTextState.setOldTextWithUserInputs(oldTextState.oldTextWithUserInputs 
                 + " " + newTextState.newTextWithBlanks + " " + userPrompt);
-              oldTextState.setOldTextWithUserInputs(oldTextState.replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'))
+              oldTextState.setOldTextWithUserInputs(oldTextState.replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'))
               isDoneState.setIsDone(true);
             }
             else {
-              oldTextState.setOldTextWithUserInputs(fullText.replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'));
-              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'));
+              oldTextState.setOldTextWithUserInputs(fullText.replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'));
+              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'));
             }
         }).catch(error => {
             console.log(error)
