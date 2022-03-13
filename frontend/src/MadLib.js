@@ -12,7 +12,7 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
 
     let formData = new FormData();
     formData.append('data', fullText);
-    axios.post('http://127.0.0.1:5000/cammul/generate',formData).then(res => {
+    axios.post('https://cammul.herokuapp.com/cammul/generate',formData).then(res => {
             var dataJSON = JSON.parse(res.data)
             if (dataJSON.code === 204) {
               oldTextState.setOldTextWithUserInputs(oldTextState.oldTextWithUserInputs 
