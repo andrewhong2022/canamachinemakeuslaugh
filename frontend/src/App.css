@@ -149,3 +149,9 @@ p{
 .user-input {
   size: 20%;
 }
+
+.typewriter-container {
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+}

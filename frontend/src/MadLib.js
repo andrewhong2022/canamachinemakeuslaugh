@@ -17,11 +17,12 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
             if (dataJSON.code === 204) {
               oldTextState.setOldTextWithUserInputs(oldTextState.oldTextWithUserInputs 
                 + " " + newTextState.newTextWithBlanks + " " + userPrompt);
+              oldTextState.setOldTextWithUserInputs(oldTextState.replaceAll(/ ([^\$A-Za-z0-9])/ig, '$1'))
               isDoneState.setIsDone(true);
             }
             else {
-              oldTextState.setOldTextWithUserInputs(fullText);
-              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" "));
+              oldTextState.setOldTextWithUserInputs(fullText.replaceAll(/ ([^\$A-Za-z0-9])/ig, '$1'));
+              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^\$A-Za-z0-9])/ig, '$1'));
             }
         }).catch(error => {
             console.log(error)
@@ -52,10 +53,11 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
 
   if (didStartState.didStart && !isDoneState.isDone) {
     return (
-      <div>
+      <div className="typewriter-container">
         <div>
           <p>{oldTextState.oldTextWithUserInputs}</p>
         </div>
+        
         <Typewriter
           options={{
             strings: newTextState.newTextWithBlanks,
@@ -63,8 +65,9 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
             delay: 30,
           }}
         />
+        
           <div>
-              <p>Please complete the sentence.</p>
+              <br />
               <form onSubmit={onSubmitUserInput}>
                   <div>
                     <textarea rows="3" cols="50" placeholder="Finish the sentence" value={userPrompt} onChange={(e) => {setUserPrompt(e.target.value);}}>test</textarea>
