@@ -36,9 +36,10 @@ const pickPrompt = (e) => {
                 className="mt-2"
                 onSelect={pickPrompt}
             >
-                <Dropdown.Item eventKey="Once upon a time"> Once upon a time... </Dropdown.Item>
-                <Dropdown.Item eventKey="Today was such a bad day">Today was such a bad day...</Dropdown.Item>
-                <Dropdown.Item eventKey="Sorry I'm late">Sorry I'm late...</Dropdown.Item>
+                <Dropdown.Item eventKey="Once upon a time,"> Once upon a time... </Dropdown.Item>
+                <Dropdown.Item eventKey="Today was such a bad day,">Today was such a bad day...</Dropdown.Item>
+                <Dropdown.Item eventKey="Sorry I'm late,">Sorry I'm late...</Dropdown.Item>
+                <Dropdown.Item eventKey="You wouldn't believe what happened: ">You wouldn't believe what happened...</Dropdown.Item>
             </DropdownButton>
         </div>
         );
