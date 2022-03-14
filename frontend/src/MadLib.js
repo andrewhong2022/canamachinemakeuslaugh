@@ -95,7 +95,7 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
   }
   else if (isDoneState.isDone) {
     return (
-      <div>
+      <div className="typewriter-container">
         <p>{oldTextState.oldTextWithUserInputs}</p>
       </div>
     );  

@@ -58,6 +58,14 @@ class MadLibGenerator(Resource):
                 "code" : 204 # successful, no content (likely stop sequence reached)
             })
         
+        newSentence = self.process(newSentence)
+        if len(newSentence) <= 1:
+            return json.dumps({
+                "prompt" : self.prompt,
+                "newSentence" : [],
+                "code" : 204 # successful, no content (likely stop sequence reached)
+            })
+            
         return json.dumps({
             "prompt" : self.prompt,
             "newSentence" : self.process(newSentence),
