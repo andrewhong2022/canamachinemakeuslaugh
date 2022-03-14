@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import './App.css';
 import axios from 'axios';
 
-const Share = ({isDoneState, oldTextState}) => {
+const Share = ({disabledState, isDoneState, oldTextState}) => {
 
   const onShare = () => {
     axios.post('https://cammul.herokuapp.com/cammul/reddit',{
@@ -16,7 +16,9 @@ const Share = ({isDoneState, oldTextState}) => {
   
   if (isDoneState.isDone) {
     return (
-      <button onClick={onShare}>Share this with friends!</button>
+      <button onClick={() => {
+        onShare()
+        disabledState.setDisabled(true)}} disabled={disabledState.disabled}>Share this with friends!</button>
     );
   }
   else {
