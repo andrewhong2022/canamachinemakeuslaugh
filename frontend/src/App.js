@@ -10,7 +10,7 @@ const App = () => {
   const [newTextWithBlanks, setNewTextWithBlanks] = useState("");
   const [didStart, setDidStart] = useState(false);
   const [isDone, setIsDone] = useState(false);
-  
+  const [disabled, setDisabled] = useState(false)
 
   const [userPrompt, setUserPrompt] = useState("");
   const [generatedText, setGeneratedText] = useState([]);
@@ -79,7 +79,7 @@ const App = () => {
         </div>
         <InitialPrompt initialPromptState = {{initialPrompt, setInitialPrompt}} didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}></InitialPrompt>
         <MadLib didStartState = {{didStart, setDidStart}} newTextState = {{newTextWithBlanks, setNewTextWithBlanks}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}} isDoneState = {{isDone, setIsDone}}/>
-        <Share isDoneState = {{isDone, setIsDone}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}/>
+        <Share disabledState = {{disabled, setDisabled}} isDoneState = {{isDone, setIsDone}} oldTextState = {{oldTextWithUserInputs, setOldTextWithUserInputs}}/>
       </header>
     </div>
   );

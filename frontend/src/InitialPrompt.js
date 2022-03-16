@@ -16,7 +16,22 @@ const pickPrompt = (e) => {
             var dataJSON = JSON.parse(res.data)
             newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^\$A-Za-z0-9])/ig, '$1'));
         }).catch(error => {
-            console.log(error)
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                // that falls out of the range of 2xx
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+              } else if (error.request) {
+                // The request was made but no response was received
+                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                // http.ClientRequest in node.js
+                console.log(error.request);
+              } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+              }
+              console.log(error.config);
         })
   
     oldTextState.setOldTextWithUserInputs(e);

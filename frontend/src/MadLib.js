@@ -17,16 +17,31 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
             if (dataJSON.code === 204) {
               oldTextState.setOldTextWithUserInputs(oldTextState.oldTextWithUserInputs 
                 + " " + newTextState.newTextWithBlanks + " " + userPrompt);
-              oldTextState.setOldTextWithUserInputs(oldTextState.replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'))
+              oldTextState.setOldTextWithUserInputs(oldTextState.replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'))
               isDoneState.setIsDone(true);
             }
             else {
-              oldTextState.setOldTextWithUserInputs(fullText.replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'));
-              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^"\$A-Za-z0-9])/ig, '$1'));
+              oldTextState.setOldTextWithUserInputs(fullText.replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'));
+              newTextState.setNewTextWithBlanks(dataJSON.newSentence.slice(0,-1).join(" ").replaceAll(/ ([^"$A-Za-z0-9])/ig, '$1'));
             }
         }).catch(error => {
-            console.log(error)
-            isDoneState.setIsDone(true);
+          if (error.response) {
+            // The request was made and the server responded with a status code
+            // that falls out of the range of 2xx
+            console.log(error.response.data);
+            console.log(error.response.status);
+            console.log(error.response.headers);
+          } else if (error.request) {
+            // The request was made but no response was received
+            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+            // http.ClientRequest in node.js
+            console.log(error.request);
+          } else {
+            // Something happened in setting up the request that triggered an Error
+            console.log('Error', error.message);
+          }
+          console.log(error.config);
+          isDoneState.setIsDone(true);
         })
 
     // TODO: if get error message, finish
@@ -80,7 +95,7 @@ const MadLib = ({didStartState, newTextState, oldTextState, isDoneState}) => {
   }
   else if (isDoneState.isDone) {
     return (
-      <div>
+      <div className="typewriter-container">
         <p>{oldTextState.oldTextWithUserInputs}</p>
       </div>
     );  

@@ -1,6 +1,6 @@
 from flask import Flask, send_from_directory
 from flask_restful import Api, Resource, reqparse
-from flask_cors import CORS #comment this on deployment
+# from flask_cors import CORS #comment this on deployment
 from api.apiHandler import ApiHandler
 from backend.madLibGenerator import MadLibGenerator
 from api.shareReddit import ShareReddit

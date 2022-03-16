@@ -26,6 +26,7 @@ class MadLibGenerator(Resource):
             presence_penalty=0
             )
         
+        print(response, sys.stdout)
         return response["choices"][0]["text"]
 
     def process(self, text):
@@ -57,8 +58,16 @@ class MadLibGenerator(Resource):
                 "code" : 204 # successful, no content (likely stop sequence reached)
             })
         
+        newSentence = self.process(newSentence)
+        if len(newSentence) <= 1:
+            return json.dumps({
+                "prompt" : self.prompt,
+                "newSentence" : [],
+                "code" : 204 # successful, no content (likely stop sequence reached)
+            })
+
         return json.dumps({
             "prompt" : self.prompt,
-            "newSentence" : self.process(newSentence),
+            "newSentence" : newSentence,
             "code" : 200 # successful, content was generated
         })

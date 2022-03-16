@@ -1,7 +1,7 @@
 import nltk
 from nltk import pos_tag, word_tokenize
 from nltk.tokenize import RegexpTokenizer
-# nltk.download('averaged_perceptron_tagger')
+nltk.download('averaged_perceptron_tagger')
 
 # parse text -> create template -> return template
 
